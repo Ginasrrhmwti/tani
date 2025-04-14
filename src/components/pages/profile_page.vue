@@ -5,10 +5,7 @@
         Edit Profil Pengguna
       </h1>
 
-      <form
-        @submit.prevent="update"
-        class="bg-white p-10 rounded-3xl shadow-lg border border-green-300 w-full max-w-3xl flex flex-col gap-8"
-      >
+      <form @submit.prevent="update" class="bg-white p-10 rounded-3xl shadow-lg border border-green-300 w-full max-w-3xl flex flex-col gap-8">
         <div class="flex justify-center">
           <img :src="userPath" class="w-24 h-24 rounded-full border-2 border-green-500 object-cover" />
         </div>
@@ -18,8 +15,7 @@
           <label class="text-lg font-medium text-green-800 mb-1">Nama Lengkap</label>
           <input
             type="text"
-            :value="user?.nama"
-            @input="(e) => (user.nama = e.target.value)"
+            v-model="user.nama"
             class="input border-2 border-green-300 rounded-xl px-4 py-2 text-xl placeholder-gray-400"
             placeholder="Masukkan nama..."
           />
@@ -30,8 +26,7 @@
           <label class="text-lg font-medium text-green-800 mb-1">Alamat</label>
           <input
             type="text"
-            :value="user?.alamat"
-            @input="(e) => (user.alamat = e.target.value)"
+            v-model="user.alamat"
             class="input border-2 border-green-300 rounded-xl px-4 py-2 text-xl placeholder-gray-400"
             placeholder="Masukkan alamat..."
           />
@@ -42,8 +37,7 @@
           <label class="text-lg font-medium text-green-800 mb-1">Email</label>
           <input
             type="email"
-            :value="user?.email"
-            @input="(e) => (user.email = e.target.value)"
+            v-model="user.email"
             class="input border-2 border-green-300 rounded-xl px-4 py-2 text-xl placeholder-gray-400"
             placeholder="Masukkan email..."
           />
@@ -54,27 +48,20 @@
           <label class="text-lg font-medium text-green-800 mb-1">Tanggal Lahir</label>
           <input
             type="date"
-            :value="user?.tanggal_lahir"
-            @input="(e) => (user.tanggal_lahir = e.target.value)"
+            v-model="user.tanggal_lahir"
             class="input border-2 border-green-300 rounded-xl px-4 py-2 text-xl"
           />
         </div>
 
         <!-- Tombol Simpan -->
-        <button
-          type="submit"
-          class="bg-green-700 hover:bg-green-800 text-white text-xl font-semibold py-3 rounded-xl transition"
-        >
+        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white text-xl font-semibold py-3 rounded-xl transition">
           Simpan Perubahan
         </button>
       </form>
 
       <!-- Tombol Kembali -->
       <div class="w-full max-w-3xl flex justify-start">
-        <router-link
-          to="/"
-          class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-xl rounded-xl transition"
-        >
+        <router-link to="/" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-xl rounded-xl transition">
           ← Kembali
         </router-link>
       </div>
@@ -93,7 +80,12 @@ export default {
   data() {
     return {
       userPath: "user.png",
-      user: null,
+      user: {
+        nama: '',
+        alamat: '',
+        email: '',
+        tanggal_lahir: ''
+      },
     };
   },
   async created() {
@@ -104,8 +96,12 @@ export default {
 
     if (error) {
       console.log(error);
+      return;
     }
-    this.user = data[0];
+    
+    if (data.length) {
+      this.user = data[0];
+    }
   },
   methods: {
     async update() {
@@ -124,7 +120,9 @@ export default {
         return;
       }
 
-      location.reload();
+      // Reload page or navigate after successful update
+      alert("Profil berhasil diperbarui.");
+      this.$router.push("/profile");
     },
   },
 };
