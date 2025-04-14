@@ -20,10 +20,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-if="data.length === 0"
-              class="text-center text-gray-500 italic"
-            >
+            <tr v-if="data.length === 0" class="text-center text-gray-500 italic">
               <td colspan="6" class="px-6 py-6">Belum ada pengaduan</td>
             </tr>
             <tr
@@ -34,14 +31,13 @@
               <td class="px-6 py-4">{{ item.nama }}</td>
               <td class="px-6 py-4">{{ item.alamat }}</td>
               <td class="px-6 py-4">{{ item.jenis_pengaduan }}</td>
-              <td class="px-6 py-4 max-w-xs break-words">
-                {{ item.deskripsi }}
-              </td>
+              <td class="px-6 py-4 max-w-xs break-words">{{ item.deskripsi }}</td>
               <td class="px-6 py-4">
                 <img
                   :src="item.foto"
-                  class="w-16 h-16 object-cover rounded-xl border border-gray-300"
+                  class="w-16 h-16 object-cover rounded-xl border border-gray-300 cursor-pointer"
                   alt="Foto"
+                  @click="openImage(item.foto)"
                 />
               </td>
               <td class="px-6 py-4">{{ item.lokasi }}</td>
@@ -58,22 +54,36 @@
           ← Kembali
         </router-link>
       </div>
+
+      <!-- Modal Gambar -->
+      <div
+        v-if="showModal"
+        class="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center"
+        @click="closeModal"
+      >
+        <img
+          :src="selectedImage"
+          class="max-w-3xl max-h-[90vh] rounded-2xl border-4 border-white shadow-xl"
+          @click.stop
+        />
+      </div>
     </div>
   </BaseLayout>
 </template>
-
 <script>
 import BaseLayout from "../layouts/base_layout.vue";
 import { supabase } from "../../lib/supabaseClient";
 
 export default {
+  components: {
+    BaseLayout,
+  },
   data() {
     return {
       data: [],
+      showModal: false,
+      selectedImage: null,
     };
-  },
-  components: {
-    BaseLayout,
   },
   async created() {
     const { data, error } = await supabase.from("pengaduan").select();
@@ -82,6 +92,16 @@ export default {
       return;
     }
     this.data = data;
+  },
+  methods: {
+    openImage(imageUrl) {
+      this.selectedImage = imageUrl;
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
+      this.selectedImage = null;
+    },
   },
 };
 </script>
