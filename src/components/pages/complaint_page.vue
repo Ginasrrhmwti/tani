@@ -27,6 +27,15 @@
           class="input w-full border-2 border-green-400 rounded-xl placeholder-gray-500 text-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-300"
         />
 
+        <!-- Input Nomor HP -->
+        <input
+          v-model="no_hp"
+          required
+          type="tel"
+          placeholder="Nomor HP..."
+          class="input w-full border-2 border-green-400 rounded-xl placeholder-gray-500 text-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-300"
+        />
+
         <!-- Input Jenis Pengaduan -->
         <input
           v-model="jenis_pengaduan"
@@ -87,6 +96,7 @@
     </div>
   </BaseLayout>
 </template>
+
 <script>
 import BaseLayout from "../layouts/base_layout.vue";
 import { supabase } from "../../lib/supabaseClient";
@@ -99,6 +109,7 @@ export default {
     return {
       nama: "",
       alamat: "",
+      no_hp: "",
       jenis_pengaduan: "",
       deskripsi: "",
       foto: null,
@@ -131,6 +142,7 @@ export default {
       const { error: insertError } = await supabase.from("pengaduan").insert({
         nama: this.nama,
         alamat: this.alamat,
+        no_hp: this.no_hp,
         jenis_pengaduan: this.jenis_pengaduan,
         deskripsi: this.deskripsi,
         foto: fotoUrl,
