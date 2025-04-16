@@ -13,6 +13,7 @@
             <tr>
               <th class="px-6 py-4">Nama</th>
               <th class="px-6 py-4">Alamat</th>
+              <th class="px-6 py-4">No. HP</th>
               <th class="px-6 py-4">Jenis Pengaduan</th>
               <th class="px-6 py-4">Deskripsi</th>
               <th class="px-6 py-4">Foto</th>
@@ -21,7 +22,7 @@
           </thead>
           <tbody>
             <tr v-if="data.length === 0" class="text-center text-gray-500 italic">
-              <td colspan="6" class="px-6 py-6">Belum ada pengaduan</td>
+              <td colspan="7" class="px-6 py-6">Belum ada pengaduan</td>
             </tr>
             <tr
               v-for="item in data"
@@ -30,6 +31,7 @@
             >
               <td class="px-6 py-4">{{ item.nama }}</td>
               <td class="px-6 py-4">{{ item.alamat }}</td>
+              <td class="px-6 py-4">{{ item.no_hp }}</td>
               <td class="px-6 py-4">{{ item.jenis_pengaduan }}</td>
               <td class="px-6 py-4 max-w-xs break-words">{{ item.deskripsi }}</td>
               <td class="px-6 py-4">
@@ -70,6 +72,7 @@
     </div>
   </BaseLayout>
 </template>
+
 <script>
 import BaseLayout from "../layouts/base_layout.vue";
 import { supabase } from "../../lib/supabaseClient";
